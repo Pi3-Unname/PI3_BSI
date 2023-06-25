@@ -1,17 +1,7 @@
 import streamlit as st
+from build_hearder import build_header
 
-st.set_page_config(
-    page_title = "Teste do Streamlit por Gabriel Alves",
-    layout = "wide",
-    menu_items = {
-        'About': "TESTE DO ABOUT"
-    }
+build_header(
+    title='Home',
+    header='HOME',
 )
-
-st.markdown(f'''
-    <h1>Testes com o Streamlit</h1>
-    <br>
-    Este branch do projeto utiliza páginas e a integração com o YData Profiling para analisar dados de um dataframe (página <i>Profiling</i>).
-    <br>
-    Além disso, alguns comandos de agrupamento de dataframe também são explorados (página <i>Grouping</i>).
-''', unsafe_allow_html=True)
