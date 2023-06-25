@@ -4,3 +4,4 @@
 *.parquet
 *.csv
 **pyvenv.cfg
+**/venv/__pycache__
