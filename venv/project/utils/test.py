@@ -27,10 +27,18 @@ array = [
 
 print(d.isnull().sum())
 print(d['Patient Disposition'].unique())
-"""
+
 
 
 data = pd.read_parquet('venv\project\data\hospital.parquet')
 
 ProfileReport(data, title='test').to_file('venv\project/reports/hospital2.html')
 
+"""
+
+data = pd.read_parquet('venv/project/data/hospital_100k.parquet')
+#data = data['APR Risk of Mortality'].loc[data['APR Risk of Mortality'] == 'minor'] = 'Minor'
+#print(data['APR Risk of Mortality'].unique())
+for column in data.columns:
+  print(f'column: {column} = {len(data[column].unique())}')
+  #print(data[column].unique())
