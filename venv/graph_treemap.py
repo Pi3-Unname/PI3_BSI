@@ -18,5 +18,5 @@ def graph_treemap(data, options, default=[]):
   button = col2.empty()
   if button.button(label='Análisar', use_container_width=25):
     button.button("Analisando...", use_container_width=25, disabled=True)
-    col2.plotly_chart(px.treemap(data, path=select))
+    st.plotly_chart(px.treemap(data, path=select))
   
