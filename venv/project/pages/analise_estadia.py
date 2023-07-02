@@ -32,13 +32,16 @@ label_mapping = {0: 'Unknown', 1: 'Minor', 2: 'Moderate', 3: 'Major', 4: 'Extrem
 
 
     
-replace_values(data_stay, {
+replace_values(data_stay, 
+  'APR Risk of Mortality',
+  {
   'unknown': 0,
   'Minor': 1,
   'Moderate': 2,
   'Major': 3,
   'Extreme': 4,
-})
+  }
+  )
 # Boxplot de tempo de estadia
 create_box(
   data_stay, 
@@ -66,7 +69,9 @@ create_box(
   p='''<p style='text-align: justify;'>No boxplot de risco de mortalidade, podemos observar que a maioria dos pacientes registrados apresentou um risco classificado como "Minor" a "Major". Isso indica que a maior parte dos pacientes teve um nível de risco relativamente baixo a moderado. Essa informação é relevante para compreender a distribuição e a gravidade dos riscos de mortalidade entre os pacientes analisados.</p>'''
 )
 
-replace_values(data_stay, {
+replace_values(data_stay, 
+  'APR Risk of Mortality',
+  {
   0: 'Unknown',
   1: 'Minor',
   2: 'Moderate',

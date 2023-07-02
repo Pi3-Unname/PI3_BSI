@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-from replace_value import replace_values
 from build_hearder import build_header
 from graph_treemap import graph_treemap
 from create_boxplot import create_box
@@ -74,14 +73,23 @@ create_box(
   title='Boxplot relating Total Costs and Type Admission',
 )
 
-graph_dispersion(
-  data_costs,
-  x='Total Costs', 
-  y='Total Charges',
-  title='Graph dispersion'
-)
+st.write('''
+  <p style='text-indent: 20px; text-align: justify;'>No boxplot que relaciona o tipo de admissão com o total dos encargos, podemos observar a presença de muitos outliers, que representam valores atípicos em relação aos encargos cobrados dos pacientes. Esses outliers indicam a existência de uma quantidade significativa de casos em que os valores cobrados diferem consideravelmente da maioria dos casos.</p>
 
+  <p style='text-indent: 20px; text-align: justify;'>Esses valores atípicos podem surgir por diversos motivos, como procedimentos médicos complexos, tratamentos especializados, despesas adicionais ou situações excepcionais relacionadas à admissão dos pacientes. Esses casos podem influenciar significativamente os encargos totais, resultando em valores que se distanciam dos valores típicos observados na maioria dos pacientes.</p>
+''',unsafe_allow_html=True
+)
 st.plotly_chart(px.line(data_costs, x='Total Costs', y='Total Charges', title='Graph Line', color='Type of Admission'))
+
+st.write('''
+  <p style='text-indent: 20px; text-align: justify;'>No gráfico de linha que relaciona o custo total com os encargos dos pacientes, podemos visualizar a variação dos preços em diferentes tipos de admissão hospitalar. Observando os eixos x e y, podemos identificar tendências relacionadas aos custos e lucros para o hospital.</p>
+
+  <p style='text-indent: 20px; text-align: justify;'>No eixo x, que representa os custos dos pacientes, podemos observar que quanto mais avançados estão os valores nesse eixo, maior tende a ser o custo total associado a esses pacientes. Isso sugere que pacientes com custos mais elevados exigem um maior investimento de recursos por parte do hospital, o que se reflete em custos mais altos.</p>
+
+  <p style='text-indent: 20px; text-align: justify;'>Por outro lado, no eixo y, que representa o encargos total, podemos identificar que aqueles pontos que tendem a estar mais elevados nesse eixo indicam os casos em que o hospital obteve um maior lucro. Isso sugere que existem tipos de admissão ou tratamentos específicos que são mais rentáveis para o hospital, resultando em custos totais menores em relação aos encargos dos pacientes.</p>
+
+''',unsafe_allow_html=True
+)
 
 st.plotly_chart(px.funnel(data_costs, x='Total Costs', y='Total Charges', title='Graph Funnel'))
 

@@ -15,7 +15,7 @@ def create_box(
     fig_box.update_xaxes(
       ticktext=[label_mapX[label] for label in df[x]],
       tickvals=df[x]
-  )
+    )
   if (label_mapY != None):
     fig_box.update_yaxes(
       ticktext=[label_mapY[label] if label in label_mapY else label for label in df[y]],
