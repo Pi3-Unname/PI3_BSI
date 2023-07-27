@@ -47,8 +47,8 @@ data_age_group = data.groupby(['Gender', 'Age Group']).size().reset_index(name='
 data_age_group = data_age_group.rename(columns={'Age Group': 'Age_Group'})
 data_age_group.sort_values('Total', ascending=True, inplace=True)
 
-st.write(data.sort_values('Total Costs', ascending=True)['Total Costs'])
+st.write(data.sort_values('Total Costs Category', ascending=True)['Total Costs Category'])
 
-st.plotly_chart(px.box(data, y="Total Costs"))
+st.plotly_chart(px.box(data, y="Total Costs Category"))
 
 graph_area(data_age_group, x='Age_Group', y='Total', header='Explorando relação de idade')

@@ -8,7 +8,6 @@ def columns_process(data: pd.DataFrame, del_columns: List[str]) -> pd.DataFrame:
   data.insert(38, 'Total Costs Category', lista_costs_category)
   
   data_modify = data.drop(del_columns, axis=1) 
-  data.drop(['Total Charges', 'Total Costs'], axis=1, inplace=True)
   data_modify = setting_values_null(data_modify)
   
   data_modify['Length of Stay'] = data_modify['Length of Stay'].apply(format_length_stay)
@@ -82,7 +81,9 @@ columns_drop = [
   'Operating Certificate Number',
   'Facility ID',
   'Zip Code - 3 digits',
- ]
+  'Total Charges', 
+  'Total Costs',
+]
 
 database = pd.read_csv('venv\project\data\hospital.csv')
 transformat_parquet(database, columns_drop, 'venv\project\data\hospital.parquet')
