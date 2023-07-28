@@ -5,3 +5,4 @@
 *.csv
 **pyvenv.cfg
 **/venv/__pycache__
+*.pkl
