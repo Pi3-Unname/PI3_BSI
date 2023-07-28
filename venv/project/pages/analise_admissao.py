@@ -11,13 +11,12 @@ build_header(
     header='Análise de admissões'
 )
 
-data=pd.read_parquet('venv\project\data\hospital_100k.parquet')
-data_stay = data.groupby(['Facility Name', 'Hospital County', 'Type of Admission', 'Ethnicity', 'Race']).size().reset_index(name='Total')
+data=pd.read_parquet('venv\project\data\hospital_1k.parquet')
+data_stay = data.groupby(['Facility Name', 'Hospital County', 'Type of Admission','Age Group', 'Ethnicity', 'Race', 'APR Risk of Mortality']).size().reset_index(name='Total')
 data_stay.sort_values('Total', ascending=True, inplace=True)
 
 st.write(data_stay)
-
-st.write('''<p style='text-align:justify;'> Na tabela a cima estão os dados de altas relevantes para as analises de admissões, entre estão eles, os 50 condados, o tipo de admissão de cada pascinete, sua etinia e raça. Essas informações podem ajudar a identificar os principais impulsionadores da demanda e a prever alterações futuras na demanda com base em tendências e fatores demográficos. </p> O campo de seleção a baixo é responsavel por gera infograficos, que relacionam as informações desejadas visualmente. </p>''',unsafe_allow_html=True
+st.write('''<p style='Nas analises de admissões contém informações podem ajudar a identificar os principais impulsionadores na demanda dos diferentes tipos de admissão. </p> O campo de seleção a baixo é responsavel por gera infograficos, que relacionam as informações desejadas visualmente. </p>''',unsafe_allow_html=True
 )
 
 graph_treemap(
@@ -25,42 +24,52 @@ graph_treemap(
     options=data_stay.columns,
 )
 
-st.write('''<p style='text-align:justify;'> A Próxima tabela referencia apenas os condados, os tipos de admissões e o total. Tonando os dados mais abragentes. Informações úteis para as organizações de saúde no planejamento da capacidade, alocação de recursos e otimização da prestação de serviços.</p>''',unsafe_allow_html=True
-)
-
-data_county_admission = data.groupby(['Hospital County', 'Type of Admission']).size().reset_index(name='Total')
-data_county_admission.sort_values('Total', ascending=True, inplace=True )
-
-bar_county = px.bar(
-    data_stay, 
-    x='Hospital County', 
-    y='Total', 
-    color='Hospital County',
-)
-
-st.write(data_county_admission,)
-
-st.write('''<p style='text-align:justify;'>Com base nos dados foram gerados dois gráficos. O primeiro trata-se de um gráfico de barras, que ilustra a quantidade total de admissões por condato. O segundo, trata-se de um gráfico de área, no qual é possivel visualizar a quatidade de cada tipo de admissão por condado. Essas informações seriam valiosas para aprimorar a tomada de decisão e o planejamento estratégico, permitindo que essas organizações identifiquem áreas de melhoria, desenvolvam políticas mais eficazes e implementem estratégias.</p>''',unsafe_allow_html=True
-)
-
-bar_county = px.bar(
-    data_county_admission, 
-    x='Hospital County', 
-    y='Total', 
-    color='Hospital County',
-)
-#bar_county.update_traces(width=10)
-st.plotly_chart(bar_county)
-
-#gráfico de área 
 bar_county_admission = px.area(
-    data_county_admission,
+    data_stay,
     y='Total',
     line_group='Type of Admission',
     x='Hospital County',
     color='Type of Admission',
-    )
-
+)
 #bar_county_admission.update_traces(width=10)
 st.plotly_chart(bar_county_admission)
 
+bar_age_admission = px.area(
+    data_stay,
+    y='Total',
+    line_group='Age Group',
+    x='Type of Admission',
+    color='Age Group',
+)
+#bar_age_admission.update_traces(width=10)
+st.plotly_chart(bar_age_admission)
+
+bar_ethnicity_admission = px.area(
+    data_stay,
+    y='Total',
+    line_group='Ethnicity',
+    x='Type of Admission',
+    color='Ethnicity',
+)
+#bar_ethnicity_admission.update_traces(width=10)
+st.plotly_chart(bar_ethnicity_admission)
+
+bar_mortality_admission = px.area(
+    data_stay,
+    y='Total',
+    line_group='APR Risk of Mortality',
+    x='Type of Admission',
+    color='APR Risk of Mortality',
+)
+#bar_ethnicity_admission.update_traces(width=10)
+st.plotly_chart(bar_mortality_admission)
+
+bar_race_admission = px.area(
+    data_stay,
+    y='Total',
+    line_group='Race',
+    x='Type of Admission',
+    color='Race',
+)
+#bar_ethnicity_admission.update_traces(width=10)
+st.plotly_chart(bar_race_admission)
