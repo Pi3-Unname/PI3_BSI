@@ -25,8 +25,8 @@ data_costs.sort_values('Total Costs', ascending=True, inplace=True)
 
 
 # Tabela apenas com os dados usados nessa seção
-_, c2, _ = st.columns((1,7,1))
-#c2.write(data_costs)
+# _, c2, _ = st.columns((1,7,1))
+# c2.write(data_costs)
 
 graph_treemap(data_costs, data_costs.columns)
 
