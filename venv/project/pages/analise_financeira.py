@@ -20,7 +20,7 @@ build_header(
 data = pd.read_parquet('venv/project/data/hospital_1k.parquet')
 
 
-data_costs = data[['Total Charges', 'Total Costs', 'Length of Stay', 'Type of Admission',]]
+data_costs = data[['Total Charges', 'Total Costs', 'Length of Stay', 'Type of Admission','Age Group','Gender','Ethnicity']]
 data_costs.sort_values('Total Costs', ascending=True, inplace=True)
 
 
@@ -73,6 +73,16 @@ create_box(
   title='Boxplot relating Total Costs and Type Admission',
 )
 
+
+create_box(
+  data_costs, 
+  x='Total Costs', 
+  y='Gender', 
+  title='Boxplot relating Total costs and with Gender of Patient',
+)
+
+
+
 st.write('''
   <p style='text-indent: 20px; text-align: justify;'>No boxplot que relaciona o tipo de admissão com o total dos encargos, podemos observar a presença de muitos outliers, que representam valores atípicos em relação aos encargos cobrados dos pacientes. Esses outliers indicam a existência de uma quantidade significativa de casos em que os valores cobrados diferem consideravelmente da maioria dos casos.</p>
 
@@ -112,3 +122,12 @@ fig = px.bar(
 )
 fig.update_traces(width=10000)
 st.plotly_chart(fig)
+
+
+fig_eth = px.bar(
+    data_costs,
+    x ='Total Charges',
+    y='Ethnicity',
+    color='Age Group',
+)
+st.plotly_chart(fig_eth)
