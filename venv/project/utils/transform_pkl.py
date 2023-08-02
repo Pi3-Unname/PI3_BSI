@@ -64,4 +64,4 @@ def save_pkl(
   
 data = equal_target(pd.read_parquet('venv/project/data/hospital.parquet'), 2500)
 x_data, y_data, columns = label_encoder(data)
-#save_pkl(x_data, y_data, 'venv/project/data/hospital_standard.pkl')
+save_pkl(x_data, y_data, 'venv/project/data/hospital_standard.pkl')

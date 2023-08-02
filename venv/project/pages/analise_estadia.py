@@ -99,5 +99,5 @@ graph(
   x = 'Length of Stay',
   options = data_modify.columns,
   type_graph=px.line,
-  type_txt='Gráfico de test'
+  type_txt='Gráfico de Linhas'
 )
