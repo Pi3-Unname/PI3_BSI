@@ -1,125 +1,103 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
 import plotly.express as px
 
+from replace_value import replace_values
 from build_hearder import build_header
 from graph_treemap import graph_treemap, graph
 from create_boxplot import create_box
+
 build_header(
-    title='Análise de admissões',
-    layout='centered',
-    header='Análise de admissões'
+  title="Análise de tempo de estadia",
+  header='Análise de tempo de estadia',
+  layout='centered',
 )
 
-data=pd.read_parquet('venv\project\data\hospital_1k.parquet')
-data_stay = data.groupby(['Facility Name','Facility ID','Type of Admission','Health Service Area','Hospital County','Operating Certificate Number','Age Group','Gender', 'Race', 'Ethnicity','Patient Disposition', 'APR Risk of Mortality','APR Medical Surgical Description']).size().reset_index(name='Total')
+data = pd.read_parquet('venv/project/data/hospital_100k.parquet')
+data_stay = data.groupby(['Type of Admission', 'APR Risk of Mortality', 'Length of Stay',]).size().reset_index(name='Total')
+#data_stay = data_stay.rename(columns={'Age Group': 'Age_Group'})
 data_stay.sort_values('Total', ascending=True, inplace=True)
 
-st.write(data_stay)
-st.write('''<p style='Nas analises de admissões contém informações podem ajudar a identificar os principais impulsionadores na demanda dos diferentes tipos de admissão. </p> O campo de seleção a baixo é responsavel por gera infograficos, que relacionam as informações desejadas visualmente. </p>''',unsafe_allow_html=True)
+# Tabela apenas com os dados usados nessa seção
+_, c2, _ = st.columns((1,7,1))
+c2.write(data_stay)
 
-st.write(data.columns)
 
 graph_treemap(
-    data_stay,
-    options=data_stay.columns,
+  data=data_stay, 
+  options=data_stay.columns.to_list(),
+  default=data_stay.columns.to_list()[:2],
 )
+label_mapping = {0: 'Unknown', 1: 'Minor', 2: 'Moderate', 3: 'Major', 4: 'Extreme',}
 
-#Health ServiceCounty Area
-fig_area = px.bar(
+st.write(data_stay['APR Risk of Mortality'].unique())
+    
+replace_values(data_stay, 'APR Risk of Mortality', {
+  'Minor': 0,
+  'Moderate': 1,
+  'Major': 2,
+  'Extreme': 3,
+})
+
+# Boxplot de tempo de estadia
+create_box(
   data_stay, 
-  x='Health Service Area', 
-  y='Total', 
-  color='Type of Admission',
+  x='Length of Stay',
+  title='Boxplot of Length of Stay',
+  p='''<p style='text-align:justify;'>Com base nesses dados, podemos inferir que a maioria dos registros possui uma estadia de 14.5 a 58 dias, com uma mediana de 33 dias. Não há valores atípicos perceptíveis além dos limites do boxplot, indicando uma distribuição relativamente concentrada dos comprimentos de estadia.</p>'''
 )
-st.plotly_chart(fig_area)
-
-#Hospital County
-bar_county_admission = px.area(
-    data_stay,
-    y='Total',
-    line_group='Type of Admission',
-    x='Hospital County',
-    color='Type of Admission',
-)
-st.plotly_chart(bar_county_admission)
-
-#Operating Certificate Number
-fig_operating = px.bar(
+# Boxplot de risco de mortalidade com tempo de estadia
+create_box(
   data_stay, 
-  x='Type of Admission', 
-  y='Operating Certificate Number', 
-  color='Total',
+  y='APR Risk of Mortality',
+  x='Length of Stay',
+  title='Boxplot of APR Risk of Mortality for Length of Stay',
+  label_mapY=label_mapping,
+  p='''<p style='text-align:justify;'>Com base no boxplot que relaciona o risco de mortalidade e o tempo de estadia, podemos observar que os registros com risco "Extreme" apresentam um tempo de internação mais frequente entre 18 e 65 dias. Por outro lado, os registros classificados como "Unknown" têm uma faixa de tempo de estadia entre 1.75 e 7.25 dias. Essa análise sugere uma relação entre o aumento do risco de mortalidade e o aumento do tempo de estadia dos pacientes. Quanto maior o risco, tende a ser maior o tempo necessário para o tratamento e cuidado adequados.</p>'''
 )
-st.plotly_chart(fig_operating)
-
-#Facility ID
-graphic_id_admission = px.scatter(
-  data_stay, 
-  x='Type of Admission', 
-  y='Facility ID', 
-  color='Total', 
+def category_costs(list_classes, old_values):
+  list_classes.sort()
+  new_list = [None] * len(old_values)
+  for i, old in enumerate(old_values):
+    for index, value in enumerate(list_classes):
+      if(len(list_classes)-1 == index):
+        new_list[i] = f'mais de {value} dias'
+      else:
+        if(value <= old < list_classes[index+1]):
+          new_list[i] = f'{value} a {list_classes[index+1]} dias'
+          break
+  return new_list
+def group_stay(data):
+  test_lista= [x*10 for x in range(13)]
+  lista_costs_category = category_costs(test_lista, data['Length of Stay'].tolist())
+  data['Length of Stay'] = lista_costs_category
+  return data
+data_modify = group_stay(data)
+graph(
+  data_modify,
+  x = 'Length of Stay',
+  options = data_modify.columns,
+  type_graph=px.bar,
+  type_txt='Gráfico de Barras'
 )
-st.plotly_chart(graphic_id_admission)
-
-#Facility Name = Facility ID
-data_facility_id_name = data.groupby(['Facility ID','Facility Name']).size().reset_index(name='Total')
-st.write(data_facility_id_name)
-
-#Age group
-fig_age = px.bar(
-  data_stay, 
-  x='Age Group', 
-  y='Total', 
-  color='Type of Admission',
+graph(
+  data_modify,
+  x = 'Length of Stay',
+  options = data_modify.columns,
+  type_graph=px.histogram,
+  type_txt='gráfico de histograma'
 )
-st.plotly_chart(fig_age)
-
-#Gender
-bar_gender_admission = px.bar(
-  data_stay, 
-  x='Type of Admission', 
-  y='Total', 
-  color='Gender',
+graph(
+  data_modify,
+  x = 'Length of Stay',
+  options = data_modify.columns,
+  type_graph=px.area,
+  type_txt='Gráfico de area'
 )
-st.plotly_chart(bar_gender_admission)
-
-#Race
-bar_race_admission = px.bar(
-  data_stay, 
-  x='Race', 
-  y='Total', 
-  color='Type of Admission',
+graph(
+  data_modify,
+  x = 'Length of Stay',
+  options = data_modify.columns,
+  type_graph=px.line,
+  type_txt='Gráfico de test'
 )
-st.plotly_chart(bar_race_admission)
-
-#Ethnicity
-fig_ethnicity = px.bar(
-  data_stay, 
-  x='Type of Admission', 
-  y='Total', 
-  color='Ethnicity',
-)
-st.plotly_chart(fig_ethnicity)
-
-bar_mortality_admission = px.area(
-    data_stay,
-    y='Total',
-    line_group='APR Risk of Mortality',
-    x='Type of Admission',
-    color='APR Risk of Mortality',
-)
-st.plotly_chart(bar_mortality_admission)
-
-
-
-
-bar_disposition_admission = px.area(
-    data_stay,
-    y='Total',
-    line_group='Patient Disposition',
-    x='Type of Admission',
-    color='Patient Disposition',
-)
-st.plotly_chart(bar_disposition_admission)
-
