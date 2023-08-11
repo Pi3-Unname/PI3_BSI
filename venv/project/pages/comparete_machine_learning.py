@@ -4,6 +4,7 @@ import streamlit as st
 import pickle
 import numpy as np
 
+import os
 from build_hearder import build_header
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report
@@ -11,12 +12,14 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
+from transform_pkl import main
+main()
 build_header(
   title="Compare machine learning",
   header='Compare machine learning',
   layout='centered',
 )
-
+ 
 
 def table_report(y_test: np.ndarray, previsao: np.ndarray, method:str =''):
   st.markdown(f'#### Classification report do médoto <span style="color: red">{method}</span>', unsafe_allow_html=True)
@@ -36,8 +39,14 @@ def naive_bayes(
   x_training: np.ndarray, y_training: np.ndarray, x_test: np.ndarray, y_test: np.ndarray
   )-> None:
   st.markdown('### Resultado do machine learning usando o método Naive Bayes')
-  naive_bayes = GaussianNB()
-  naive_bayes.fit(x_training, y_training)
+  if not(os.path.isfile('venv/project/data/naive_bayes.pkl')):
+    naive_bayes = GaussianNB()
+    naive_bayes.fit(x_training, y_training)
+    with open('venv/project/data/naive_bayes.pkl', mode='wb') as f:
+      pickle.dump(naive_bayes, f)
+  else:
+    with open('venv/project/data/naive_bayes.pkl', 'rb') as f:
+      naive_bayes = pickle.load(f)
   previsao_naive = naive_bayes.predict(x_test)
   table_report(y_test, previsao_naive, 'Naive Bayes')
   confusion_graph(y_test, previsao_naive, 'Naive Bayes')
@@ -46,18 +55,31 @@ def tree_decision(
   x_training: np.ndarray, y_training: np.ndarray, x_test: np.ndarray, y_test: np.ndarray
   )-> None:
   st.markdown('### Resultado do machine learning usando o método Árvore de decisão')
-  tree_decision = DecisionTreeClassifier(criterion='entropy')
-  tree_decision.fit(x_training, y_training)
+  if not(os.path.isfile('venv/project/data/tree_decision.pkl')):
+    tree_decision = DecisionTreeClassifier(criterion='entropy')
+    tree_decision.fit(x_training, y_training)
+    with open('venv/project/data/tree_decision.pkl', mode='wb') as f:
+      pickle.dump(tree_decision, f)
+  else:
+    with open('venv/project/data/tree_decision.pkl', 'rb') as f:
+      tree_decision = pickle.load(f)
+  st.write(x_test)
   prevision_tree = tree_decision.predict(x_test)
   table_report(y_test, prevision_tree,'Árvore de decisão')
   confusion_graph(y_test, prevision_tree, 'Árvore de decisão')
-
+  
 def KNN(
   x_training: np.ndarray, y_training: np.ndarray, x_test: np.ndarray, y_test: np.ndarray
   )-> None:
   st.markdown('### Resultado do machine learning usando o método KNN')
-  KNN_data = KNeighborsClassifier(n_neighbors=10, weights='distance', p=1)
-  KNN_data.fit(x_training, y_training)
+  if not(os.path.isfile('venv/project/data/KNN_data.pkl')):
+    KNN_data = KNeighborsClassifier(n_neighbors=10, weights='distance', p=1)
+    KNN_data.fit(x_training, y_training)
+    with open('venv/project/data/KNN_data.pkl', mode='wb') as f:
+      pickle.dump(KNN_data, f)
+  else:
+    with open('venv/project/data/KNN_data.pkl', 'rb') as f:
+      KNN_data = pickle.load(f)
   prevision_knn = KNN_data.predict(x_test)
   table_report(y_test, prevision_knn, 'KNN')
   confusion_graph(y_test, prevision_knn, 'KNN')
@@ -66,8 +88,14 @@ def random_forest(
   x_training: np.ndarray, y_training: np.ndarray, x_test: np.ndarray, y_test: np.ndarray
   )-> None:
   st.markdown('### Resultado do machine learning usando o método Random Forest')
-  random_forest = RandomForestClassifier(n_estimators=40, criterion='entropy', random_state=0)
-  random_forest.fit(x_training, y_training)
+  if not(os.path.isfile('venv/project/data/random_forest.pkl')):
+    random_forest = RandomForestClassifier(n_estimators=40, criterion='entropy', random_state=0)
+    random_forest.fit(x_training, y_training)
+    with open('venv/project/data/random_forest.pkl', mode='wb') as f:
+      pickle.dump(random_forest, f)
+  else:
+    with open('venv/project/data/random_forest.pkl', 'rb') as f:
+      random_forest = pickle.load(f)
   prevision_random_forest = random_forest.predict(x_test)
   importances = pd.Series(
     data=random_forest.feature_importances_, 

@@ -1,4 +1,5 @@
 from datetime import date
+import numpy as np
 
 class Pacient:
   def __init__(self):
@@ -13,15 +14,16 @@ class Pacient:
     self._stay = ''
     self._admission = ''
     self._patient_disposition = ''
-    self._APR_DRG_description = ''
-    self._APR_MDC_description = ''
-    self._disease_severity = ''
+    self._APR_DRG_code = 0
+    self._APR_MDC_code = 0
+    self._disease_severity_code = ''
     self._risck_mortality = ''
     self._type_pay = ''
     self._Attending_license_number = 0
     self._Operating_license_number = 0
     self._Abortion_Indicator= ''
     self._Emergency_Indicator= ''
+    self._medical_description= ''
 
   def set_gender(self, value):
     match value:
@@ -66,12 +68,23 @@ class Pacient:
     self._admission = value
   def set_patient_disposition(self, value):
     self._patient_disposition = value
-  def set_APR_DRG_description(self, value):
-    self._APR_DRG_description = value
-  def set_APR_MDC_description(self, value):
-    self._APR_MDC_description = value
-  def set_disease_severity(self, value):
-    self._disease_severity = value
+  def set_APR_DRG_code(self, value):
+    self._APR_DRG_code = int(value)
+  def set_APR_MDC_code(self, value):
+    self._APR_MDC_code = int(value)
+    
+  def set_disease_severity_code(self, value):
+
+    match value:
+      case 'Minor':
+        self._disease_severity_code = 1
+      case 'Moderate':
+        self._disease_severity_code = 2
+      case 'Major':
+        self._disease_severity_code = 3
+      case 'Extreme':
+        self._disease_severity_code = 4
+    
   def set_risck_mortality(self, value):
     self._risck_mortality = value
   def set_type_pay(self, value):
@@ -84,13 +97,14 @@ class Pacient:
     self._Abortion_Indicator= 'Y' if value else 'N'
   def set_Emergency_Indicator(self, value):
     self._Emergency_Indicator= 'Y' if value else 'N'
-
+  def set_medical_description(self, value):
+    self._medical_description = value
+  
   def getValues(self):
     return{
       'area': self._area,
       'hospital_county': self._hospital_county,
       'hospital_name': self._hospital_name,
-      'age': self._age,
       'age_group': self._age_group,
       'gender': self._gender,
       'race': self._race,
@@ -98,13 +112,22 @@ class Pacient:
       'stay': self._stay,
       'admission': self._admission,
       'patient_disposition': self._patient_disposition,
-      'APR_DRG_description': self._APR_DRG_description,
-      'APR_MDC_description': self._APR_MDC_description,
-      'disease_severity': self._disease_severity,
+      'APR_DRG_code': self._APR_DRG_code,
+      'APR_MDC_code': self._APR_MDC_code,
+      'disease_severity_code': self._disease_severity_code,
       'risck_mortality': self._risck_mortality,
+      'APR Medical Surgical Description': self._medical_description,
       'type_pay': self._type_pay,
       'Attending_license_number': self._Attending_license_number,
       'Operating_license_number': self._Operating_license_number,
       'Abortion_Indicator': self._Abortion_Indicator,
       'Emergency_Indicator': self._Emergency_Indicator,
     }
+  def getvec(self):
+    return np.array(
+      [self._area, self._hospital_county, self._hospital_name, self._age_group,
+        self._gender, self._race, self._ethnicity, self._stay, self._admission,
+        self._patient_disposition, self._APR_DRG_code, self._APR_MDC_code,
+        self._disease_severity_code, self._risck_mortality, self._medical_description,
+        self._type_pay, self._Attending_license_number, self._Operating_license_number,
+        self._Abortion_Indicator, self._Emergency_Indicator,])
