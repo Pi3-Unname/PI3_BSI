@@ -1,0 +1,2 @@
+LINK PARA BAIXAR A BASE DE DADOS: oi
+https://www.kaggle.com/datasets/thedevastator/2010-new-york-state-hospital-inpatient-discharge?select=hospital-inpatient-discharges-sparcs-de-identified-2010-1.csv
