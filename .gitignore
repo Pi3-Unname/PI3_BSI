@@ -1,0 +1,8 @@
+**/venv/lib
+**/venv/Scripts
+**/venv/share
+*.parquet
+*.csv
+**pyvenv.cfg
+**/venv/__pycache__
+*.pkl
