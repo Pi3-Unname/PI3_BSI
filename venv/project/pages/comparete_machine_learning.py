@@ -4,7 +4,10 @@ import streamlit as st
 import pickle
 import numpy as np
 
+
 import os
+from transform_pkl import main
+
 from build_hearder import build_header
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report
@@ -12,8 +15,6 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
-from transform_pkl import main
-main()
 build_header(
   title="Compare machine learning",
   header='Compare machine learning',
@@ -63,7 +64,6 @@ def tree_decision(
   else:
     with open('venv/project/data/tree_decision.pkl', 'rb') as f:
       tree_decision = pickle.load(f)
-  st.write(x_test)
   prevision_tree = tree_decision.predict(x_test)
   table_report(y_test, prevision_tree,'Árvore de decisão')
   confusion_graph(y_test, prevision_tree, 'Árvore de decisão')
@@ -88,6 +88,7 @@ def random_forest(
   x_training: np.ndarray, y_training: np.ndarray, x_test: np.ndarray, y_test: np.ndarray
   )-> None:
   st.markdown('### Resultado do machine learning usando o método Random Forest')
+  
   if not(os.path.isfile('venv/project/data/random_forest.pkl')):
     random_forest = RandomForestClassifier(n_estimators=40, criterion='entropy', random_state=0)
     random_forest.fit(x_training, y_training)
@@ -96,6 +97,7 @@ def random_forest(
   else:
     with open('venv/project/data/random_forest.pkl', 'rb') as f:
       random_forest = pickle.load(f)
+      
   prevision_random_forest = random_forest.predict(x_test)
   importances = pd.Series(
     data=random_forest.feature_importances_, 
@@ -118,10 +120,15 @@ def random_forest(
   table_report(y_test, prevision_random_forest, 'Random Forest')
   confusion_graph(y_test, prevision_random_forest, 'Random Forest')
   
+  
+if not(os.path.isfile('venv/project/data/hospital_standard.pkl')):
+  print('teste')
+  main()  
+
 with open('venv/project/data/hospital_standard.pkl', 'rb') as f:
   x_training, y_training, x_test, y_test = pickle.load(f)
-
+  
 naive_bayes(x_training, y_training, x_test, y_test)
 tree_decision(x_training, y_training, x_test, y_test)
 random_forest(x_training, y_training, x_test, y_test)
-KNN(x_training, y_training, x_test, y_test)
+##KNN(x_training, y_training, x_test, y_test)

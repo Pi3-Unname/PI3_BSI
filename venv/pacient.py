@@ -136,8 +136,8 @@ class Pacient:
         ])
   def predict(self):
     x_data = self.getvec()
-    with open('venv/project/data/test.pkl', 'rb') as f:
-      standard, label_service_Area, label_hospital_county, label_facility_name, label_gender, label_race, label_ethnicity, label_type_dmission, label_disposition, label_risk_mortality, label_medical_surgical, label_payment, _, _, _ = pickle.load(f)
+    with open('venv/project/data/label_standard.pkl', 'rb') as f:
+      standard, _, label_service_Area, label_hospital_county, label_facility_name, label_gender, label_race, label_ethnicity, label_type_dmission, label_disposition, label_risk_mortality, label_medical_surgical, label_payment, _, _, _ = pickle.load(f)
  
     x_data[:, 0] = int(label_service_Area.transform(x_data[:, 0]))
     x_data[:, 1] = label_hospital_county.transform(x_data[:, 1])

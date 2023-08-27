@@ -10,7 +10,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
 def equal_target(data: pd.DataFrame, n):
-  data.drop(['APR DRG Description', 'APR MDC Description', 'APR Severity of Illness Description'], axis=1, inplace=True)
+  data.drop([
+    'APR DRG Description', 
+    'APR MDC Description', 
+    'APR Severity of Illness Description', 
+    "Total Costs",
+    "Total Charges",
+    ], axis=1, inplace=True)
   training_label(data)
   new_data = data.groupby('Total Costs Category').apply(
   lambda x: x.sample(n=min(len(x), n), random_state=2)
@@ -115,8 +121,7 @@ def training_label(data):
   
 def main():
   #if not(os.path.isfile('venv/project/data/hospital_standard.pkl')):
-    data = equal_target(pd.read_parquet('venv/project/data/hospital.parquet'), 2500)
+    data = equal_target(pd.read_parquet('venv/project/data/hospital.parquet'), 235677)
     x_data, y_data, columns = label_encoder(data)
     save_pkl(x_data, y_data, 'venv/project/data/hospital_standard.pkl')
 
-main()

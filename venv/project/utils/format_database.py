@@ -3,7 +3,7 @@ import pandas as pd
 
 def columns_process(data: pd.DataFrame, del_columns: List[str]) -> pd.DataFrame:
   
-  test_lista= [0, 5, 10, 30, 50, 100, 200, 300]
+  test_lista= [0, 3.3, 6.2, 12.2, 25.7,]
   lista_costs_category = category_costs(test_lista, edit_total_costs(data))
   data.insert(38, 'Total Costs Category', lista_costs_category)
   
@@ -67,6 +67,7 @@ def parquet_random(path: str, num: int) -> None:
   num2 = ''.join(reversed(''.join(reversed(f'{num}')).replace('000', 'k')))
   new_data.to_parquet(path.replace('.', f'_{num2}.'))
   
+
 columns_drop = [
   'index',
   'Other Provider License Number', # Mais de 70% de valores nulos
@@ -81,53 +82,12 @@ columns_drop = [
   'Operating Certificate Number',
   'Facility ID',
   'Zip Code - 3 digits',
-  'Total Charges', 
-  'Total Costs',
 ]
 
-database = pd.read_csv('venv\project\data\hospital.csv')
-transformat_parquet(database, columns_drop, 'venv\project\data\hospital.parquet')
+""" database = pd.read_csv('venv\project\data\hospital.csv')
+transformat_parquet(database, columns_drop, 'venv\project\data\hospital.parquet') """
 
 for i in [500, 1000, 100000]:
   parquet_random('venv\project\data\hospital.parquet', i)
 
-#print(pd.read_parquet('alg/data/hospital.parquet'))
 
-# all_colmuns_data = ['index',                                      
-# 'Health Service Area',                       
-# 'Hospital County',                           
-# 'Operating Certificate Number',              
-# 'Facility ID',                               
-# 'Facility Name',                              
-# 'Age Group',                                  
-# 'Zip Code - 3 digits',                       
-# 'Gender',                                     
-# 'Race',                                       
-# 'Ethnicity',                                  
-# 'Length of Stay',                             
-# 'Type of Admission',                          
-# 'Patient Disposition',                        
-# 'Discharge Year',                             
-# 'CCS Diagnosis Code',                        
-# 'CCS Diagnosis Description',                 
-# 'CCS Procedure Code',                        
-# 'CCS Procedure Description',                 
-# 'APR DRG Code',                               
-# 'APR DRG Description',                        
-# 'APR MDC Code',                               
-# 'APR MDC Description',                        
-# 'APR Severity of Illness Code',               
-# 'APR Severity of Illness Description',        
-# 'APR Risk of Mortality',                      
-# 'APR Medical Surgical Description',           
-# 'Source of Payment 1',                        
-# 'Source of Payment 2',                     
-# 'Source of Payment 3',                    
-# 'Attending Provider License Number',         
-# 'Operating Provider License Number',       
-# 'Other Provider License Number',          
-# 'Birth Weight',                               
-# 'Abortion Edit Indicator',                    
-# 'Emergency Department Indicator',             
-# 'Total Charges',                              
-# 'Total Costs']

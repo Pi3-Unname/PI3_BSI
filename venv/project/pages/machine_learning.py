@@ -1,8 +1,9 @@
 import pandas as pd
 import streamlit as st
 from datetime import date
-from pacient import Pacient
+#from pacient import Pacient
 from transform_pkl import main, label_json
+
 
 fields = {
   "Health Service Area": [
@@ -682,18 +683,185 @@ def race_ethnicity():
   ethnicity= c2.radio('etinia', fields['Ethnicity'])
   return gender, race, ethnicity
 
+
+from datetime import date
+import numpy as np
+import pickle
+
+class Pacient:
+  def __init__(self):
+    self._area= ''
+    self._hospital_county= ''
+    self._hospital_name= ''
+    self._age = 0
+    self._age_group= ''
+    self._gender = ''
+    self._race = ''
+    self._ethnicity = ''
+    self._stay = ''
+    self._admission = ''
+    self._patient_disposition = ''
+    self._APR_DRG_code = 0
+    self._APR_MDC_code = 0
+    self._disease_severity_code = ''
+    self._risck_mortality = ''
+    self._type_pay = ''
+    self._Attending_license_number = 0
+    self._Operating_license_number = 0
+    self._Abortion_Indicator= ''
+    self._Emergency_Indicator= ''
+    self._medical_description= ''
+
+  def set_gender(self, value):
+    match value:
+      case 'Male':
+        self._gender = 'M'
+      case 'Female':
+        self._gender = 'F'
+      case _:
+        self._gender = 'U'    
+  def get_gender(self):
+    return self._gender
+  
+  def set_age(self, value):
+    self._age = (date.today() - value).days // 365
+    
+    if (0 <= self._age and self._age < 18):
+      self._age_group = 0
+    elif (18 <= self._age and self._age < 30):
+      self._age_group = 1
+    elif (30 <= self._age and self._age < 50):
+      self._age_group = 2
+    elif (50 <= self._age and self._age < 70):
+      self._age_group = 3
+    else:
+      self._age_group = 4
+  def get_age(self):
+    return self._age_group
+
+  def set_area(self, value):
+    self._area= value
+  def set_hospital_county(self, value):
+    self._hospital_county= value
+  def set_hospital_name(self, value):
+    self._hospital_name= value
+  def set_race(self, value):
+    self._race = value
+  def set_ethnicity(self, value):
+    self._ethnicity = value
+  def set_stay(self, value):
+    self._stay = value
+  def set_admission(self, value):
+    self._admission = value
+  def set_patient_disposition(self, value):
+    self._patient_disposition = value
+  def set_APR_DRG_code(self, value):
+    self._APR_DRG_code = int(value)
+  def set_APR_MDC_code(self, value):
+    self._APR_MDC_code = int(value)
+    
+  def set_disease_severity_code(self, value):
+    match value:
+      case 'Minor':
+        self._disease_severity_code = 1
+      case 'Moderate':
+        self._disease_severity_code = 2
+      case 'Major':
+        self._disease_severity_code = 3
+      case 'Extreme':
+        self._disease_severity_code = 4
+    
+  def set_risck_mortality(self, value):
+    self._risck_mortality = value
+  def set_type_pay(self, value):
+    self._type_pay = value
+  def set_Attending_license_number(self, value):
+    self._Attending_license_number = value
+  def set_Operating_license_number(self, value):
+    self._Operating_license_number = value
+  def set_Abortion_Indicator(self, value):
+    self._Abortion_Indicator= 1 if value else 0
+  def set_Emergency_Indicator(self, value):
+    self._Emergency_Indicator= 1 if value else 0
+  def set_medical_description(self, value):
+    self._medical_description = value
+  
+  def getValues(self):
+    return{
+      'Health Service Area': self._area,
+      'Hospital County': self._hospital_county,
+      'Facility Name': self._hospital_name,
+      'Age Group': self._age_group,
+      'Gender': self._gender,
+      'Race': self._race,
+      'Ethnicity': self._ethnicity,
+      'Length of Stay': self._stay,
+      'Type of Admission': self._admission,
+      'Patient Disposition': self._patient_disposition,
+      'APR DRG Code': self._APR_DRG_code,
+      'APR MDC Code': self._APR_MDC_code,
+      'APR Severity of Illness Code': self._disease_severity_code,
+      'APR Risk of Mortality': self._risck_mortality,
+      'APR Medical Surgical Description': self._medical_description,
+      'Source of Payment 1': self._type_pay,
+      'Attending Provider License Number': self._Attending_license_number,
+      'Operating Provider License Number': self._Operating_license_number,
+      'Abortion Edit Indicator': self._Abortion_Indicator,
+      'Emergency Department Indicator': self._Emergency_Indicator,
+    }
+  def getValuesVec(self):
+    return{
+      'Health Service Area': fields['Health Service Area']+[self._area],
+      'Hospital County': fields['Hospital County']+[self._hospital_county],
+      'Facility Name': fields['Facility Name']+[self._hospital_name],
+      'Age Group': self._age_group,
+      'Gender': fields['Gender']+[self._gender],
+      'Race': fields['Race']+[self._race],
+      'Ethnicity': fields['Ethnicity']+[self._ethnicity],
+      'Length of Stay': self._stay,
+      'Type of Admission': fields['Type of Admission']+[self._admission],
+      'Patient Disposition': fields['Patient Disposition']+[self._patient_disposition],
+      'APR DRG Code': self._APR_DRG_code,
+      'APR MDC Code': self._APR_MDC_code,
+      'APR Severity of Illness Code': self._disease_severity_code,
+      'APR Risk of Mortality': fields['APR Risk of Mortality']+[self._risck_mortality],
+      'APR Medical Surgical Description': fields['APR Medical Surgical Description']+[self._medical_description],
+      'Source of Payment 1': fields['Source of Payment 1']+[self._type_pay],
+      'Attending Provider License Number': self._Attending_license_number,
+      'Operating Provider License Number': self._Operating_license_number,
+      'Abortion Edit Indicator': fields['Abortion Edit Indicator']+[self._Abortion_Indicator],
+      'Emergency Department Indicator': fields['Emergency Department Indicator']+[self._Emergency_Indicator],
+    }
+  def getvec(self):
+    return np.array(
+      [
+        [self._area, self._hospital_county, self._hospital_name, self._age_group,
+        self._gender, self._race, self._ethnicity, self._stay, self._admission,
+        self._patient_disposition, self._APR_DRG_code, self._APR_MDC_code,
+        self._disease_severity_code, self._risck_mortality, self._medical_description,
+        self._type_pay, self._Attending_license_number, self._Operating_license_number,
+        self._Abortion_Indicator, self._Emergency_Indicator,],
+        ])
+
+
 with st.container():
   area, hospital_county, hospital_name = hospital_info()
+  
   birth_day= st.date_input('Data de nascimento', min_value=date(1800, 1, 1), max_value=date.today())
+  
   gender, race, ethnicity=race_ethnicity()
   stay= st.slider('Tempo de estadia', 0, 120)
   admission= st.radio('Tipo da admissão', fields['Type of Admission'], horizontal=True)
   patient_disposition= st.selectbox('Local de tratamento', ['']+fields['Patient Disposition'])
+  
   APR_DRG_code= code_describe('Descrição por APR DRG', data, 'APR DRG Code', 'APR DRG Description')
   APR_MDC_code= code_describe('Descrição por APR MDC', data, 'APR MDC Code', 'APR MDC Description')
+  
   disease_severity = st.radio('Gravidade da doença', fields['APR Severity of Illness Description'], horizontal=True)
+  
   risck_mortality= st.radio('Risco de mortalidade', fields['APR Risk of Mortality'], horizontal=True)
   medical_description = st.selectbox("Descrição cirúrgica", ['']+fields['APR Medical Surgical Description'])
+  
   type_pay= st.selectbox('Planos de saúde', ['']+fields['Source of Payment 1'])
   Attending_license_number= st.number_input(
     label = 'Número da licença do provedor de atendimento', value=0., min_value=0., step=.1, format='%.1f'
@@ -704,19 +872,20 @@ with st.container():
   _, c1, c2, _ = st.columns((.3, 1, 1, .3))
   Abortion_Indicator= c1.checkbox('Indicador de aborto')
   Emergency_Indicator= c2.checkbox('Indicador de Emergência')
+  
   _, meio, _ = st.columns((1, .5, 1))
   if meio.button('Submit', ):
     flag = [
-      area=='',
-      hospital_county=='',
-      hospital_name=='',
-      patient_disposition=='',
-      APR_DRG_code==None,
-      APR_MDC_code==None,
-      type_pay=='',
-      medical_description=='',
+      area == '',
+      hospital_county == '',
+      hospital_name == '',
+      race == '',
+      patient_disposition == '',
+      APR_DRG_code == '',
+      APR_MDC_code == '',
+      type_pay == '',            
     ]
-    
+
     if sum(flag) != 0:
       st.markdown(
         """<p style='text-align: center; color: red;'>
@@ -726,6 +895,7 @@ with st.container():
       )
     else:
       pacient = Pacient()
+      
       pacient.set_area(area)
       pacient.set_hospital_county(hospital_county)
       pacient.set_hospital_name(hospital_name)
@@ -747,6 +917,25 @@ with st.container():
       pacient.set_Emergency_Indicator(Emergency_Indicator)
       pacient.set_medical_description(medical_description)
       
-      st.write(pacient.predict()[0])
+      #st.write(pacient.getValuesVec())
 
+      x_data = pacient.getvec()
+      with open('venv/project/data/test.pkl', 'rb') as f:
+        standard, label_service_Area, label_hospital_county, label_facility_name, label_gender, label_race, label_ethnicity, label_type_dmission, label_disposition, label_risk_mortality, label_medical_surgical, label_payment, _, _, _ = pickle.load(f)
       
+      t = []
+      x_data[:, 0] = int(label_service_Area.transform(x_data[:, 0]))
+      x_data[:, 1] = label_hospital_county.transform(x_data[:, 1])
+      x_data[:, 2] = label_facility_name.transform(x_data[:, 2])
+      x_data[:, 4] = label_gender.transform(x_data[:, 4])
+      x_data[:, 5] = label_race.transform(x_data[:, 5])
+      x_data[:, 6] = label_ethnicity.transform(x_data[:, 6])
+      x_data[:, 8] = label_type_dmission.transform(x_data[:, 8])
+      x_data[:, 9] = label_disposition.transform(x_data[:, 9])
+      x_data[:, 13] = label_risk_mortality.transform(x_data[:, 13])
+      x_data[:, 14] = label_medical_surgical.transform(x_data[:, 14])
+      x_data[:, 15] = label_payment.transform(x_data[:, 15])
+      x_data = standard.transform(x_data)
+      with open('venv/project/data/random_forest.pkl', 'rb') as f:
+        random_forest= pickle.load(f)
+      st.write(random_forest.predict(x_data))
