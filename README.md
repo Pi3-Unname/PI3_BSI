@@ -51,7 +51,7 @@ Esse projeto é voltado para área de saude e foi desenvolvido com objetivo de o
 
 ## 🚀 Como executar o projeto
 
-Este projeto é divido em três etapas:
+Este projeto é divido em duas partes:
 1. Web App(streamlit) 
 2. Mobile (Heal Analytics)
 
