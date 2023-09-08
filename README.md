@@ -61,3 +61,32 @@ Este projeto é divido em três etapas:
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 [Python](https://www.python.org/downloads/), [Flutter](https://flutter.dev). 
 Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
+
+
+
+#### 🧭 Rodando a aplicação web (Frontend)
+
+```bash
+
+# Clone este repositório
+$ git clone https://github.com/Pi3-Unname/PI3_BSI.git
+
+# Acesse a pasta do projeto no seu terminal/cmd
+$ cd PI3_BSI
+
+# Vá para a pasta venv
+$ cd venv
+
+# Instale as dependências
+$ pip install -r requirements.txt
+
+# Converta o dataset em .parquet
+$ cd project/utils/format_database.py
+
+# Executa a aplicação streamlit
+$ streamlit run venv/project/Home.py
+
+# A aplicação será aberta na porta:Local URL: http://localhost:8501
+  Network URL: http://192.168.0.103:8501
+
+```
