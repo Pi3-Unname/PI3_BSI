@@ -46,3 +46,18 @@ Esse projeto é voltado para área de saude e foi desenvolvido com objetivo de o
 - [x] Análise Exploratória
 - [x] Machine Learning
 - [x] Comparate Machine Learning
+
+
+
+## 🚀 Como executar o projeto
+
+Este projeto é divido em três etapas:
+1. Web App(streamlit) 
+2. Mobile (Heal Analytics)
+
+
+### Pré-requisitos
+
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
+[Python](https://www.python.org/downloads/), [Flutter](https://flutter.dev). 
+Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
