@@ -96,6 +96,7 @@ $ streamlit run venv/project/Home.py
   Network URL: http://192.168.0.103:8501
 
 
+```
 ---
 ## 🛠 Tecnologias
 
