@@ -10,16 +10,10 @@ Tabela de conteúdos
    * [Sobre o projeto](#-sobre-o-projeto)
    * [Funcionalidades](#-funcionalidades)
    * [Layout](#-layout)
-     * [Mobile](#mobile)
-     * [Web](#web)
    * [Como executar o projeto](#-como-executar-o-projeto)
      * [Pré-requisitos](#pré-requisitos)
-     * [Rodando o Backend (servidor)](#user-content--rodando-o-backend-servidor)
-     * [Rodando a aplicação web (Frontend)](#user-content--rodando-a-aplicação-web-frontend)
+     * [Rodando a aplicação web (Streamlit)](#user-content--rodando-a-aplicação-web-frontend)
    * [Tecnologias](#-tecnologias)
-     * [WebSite](#user-content-website--react----typescript)
-     * [Server](#user-content-server--nodejs----typescript)
-     * [Mobile](#user-content-mobile--react-native----typescript)
    * [Autor(es)](#-autor(es))
    * [Licença](#user-content--licença)
 <!--te-->
@@ -30,10 +24,6 @@ Tabela de conteúdos
 Esse projeto é voltado para área de saude e foi desenvolvido com objetivo de oferecer, por meio de análises estatísticas e uso de Marchine Learning, recursos necessários para prever os custos, tempo de estadia e procedimentos realizados pelo paciente.Estas análises serão úteis para obter insights e ajudar na tomada de decisão pelo gestor de um determinado hospital ou qualquer pessoa vinculada a saúde que lidam constantemente com essas informações.
 
 ## 🎨 Layout
-
-
-
-
 
 ## ⚙️ Funcionalidades
 
@@ -62,8 +52,8 @@ Este projeto é divido em duas partes:
 ### Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
-[Python](https://www.python.org/downloads/), [Flutter](https://flutter.dev). 
-Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
+[Python](https://www.python.org/downloads/) e um editor de código [VSCode](https://code.visualstudio.com/)
+Baixe o dataset que será usado no projeto: [DataSet The New York Hospital](https://www.kaggle.com/datasets/thedevastator/2010-new-york-state-hospital-inpatient-discharge), salve na pasta do projeto PI3_BSI/venv/project/data e renomeie o arquivo para 'hospital'.
 
 
 
@@ -110,6 +100,5 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[MatplotLib](https://matplotlib.org)**
 -   **[Plotly](https://plotly.com)**
 
--   Protótipo:  **[Figma](https://www.figma.com/)**  →  **[Protótipo (Heal Analytics)](https://www.figma.com)**
 ---
 
