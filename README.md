@@ -96,7 +96,7 @@ $ streamlit run venv/project/Home.py
   Network URL: http://192.168.0.103:8501
 
 
-
+---
 ## 🛠 Tecnologias
 
 As seguintes ferramentas foram usadas na construção do projeto:
@@ -110,8 +110,5 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Plotly](https://plotly.com)**
 
 -   Protótipo:  **[Figma](https://www.figma.com/)**  →  **[Protótipo (Heal Analytics)](https://www.figma.com)**
-
-
 ---
 
-```
