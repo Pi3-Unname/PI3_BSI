@@ -51,8 +51,8 @@ Este projeto foi desenvolvido e executado no servidor Streamlit:  [Web App(strea
 ### Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
-[Python](https://www.python.org/downloads/) e um editor de código [VSCode](https://code.visualstudio.com/)
-Baixe o dataset que será usado no projeto: [DataSet The New York Hospital](https://www.kaggle.com/datasets/thedevastator/2010-new-york-state-hospital-inpatient-discharge), salve na pasta do projeto PI3_BSI/venv/project/data e renomeie o arquivo para 'hospital'.
+[Python](https://www.python.org/downloads/) e um editor de código [VSCode](https://code.visualstudio.com/).
+Baixe o dataset que será usado no projeto: [DataSet The New York Hospital](https://www.kaggle.com/datasets/thedevastator/2010-new-york-state-hospital-inpatient-discharge), salve na pasta do projeto PI3_BSI/venv/project/data e renomeie o arquivo para hospital.
 
 
 
@@ -76,7 +76,10 @@ $ cd venv
 $ pip install -r requirements.txt
 
 # Converta o dataset em .parquet
-$ cd project/utils/format_database.py
+$ cd venv/project/utils/format_database.py
+
+# Execute o transform_pkl.py
+$ cd venv/transform_pkl.py
 
 # Executa a aplicação streamlit
 $ streamlit run venv/project/Home.py
@@ -100,4 +103,11 @@ As seguintes ferramentas foram usadas na construção do projeto:
 -   **[Plotly](https://plotly.com)**
 
 ---
+
+### Autor(es)
+
+
+### Licença
+
+
 
