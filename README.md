@@ -106,8 +106,20 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ### Autor(es)
 
+* Jose Carlos
+* Silas Ribeiro
+* Paloma Moraes
+* Michael Douglas
 
-### Licença
+---
+
+## 📝 Licença
+
+Este projeto esta sobe a licença [MIT](./LICENSE).
+
+Feito por  Jose Carlos | Silas Ribeiro | Paloma Moraes | Michael Douglas
+
+---
 
 
 
