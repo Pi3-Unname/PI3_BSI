@@ -90,6 +90,13 @@ $ streamlit run venv/project/Home.py
 
 ```
 ---
+## Video explicativo
+
+<p align = "center">
+<img width="600" height=auto src="https://github.com/Pi3-Unname/PI3_BSI/blob/main/venv/images/clone-repositoriogif.gif">
+</p>
+
+---
 ## 🛠 Tecnologias
 
 As seguintes ferramentas foram usadas na construção do projeto:
